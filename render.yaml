@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: teramanga-extensions
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: .
+    # Free instances sleep when idle and lose server data on restart.
+    # Library metadata and restore settings are kept in the reader's browser.
+    plan: free
+    region: ohio
+    envVars:
+      - key: AUTH_MODE
+        value: BASIC_AUTH
+      - key: AUTH_USERNAME
+        value: reader
+      - key: AUTH_PASSWORD
+        generateValue: true
+      - key: WEB_UI_ENABLED
+        value: "false"
+      - key: KCEF_ENABLED
+        value: "false"
+      - key: JAVA_TOOL_OPTIONS
+        value: "-Xms32m -Xmx160m -XX:MaxMetaspaceSize=128m -XX:ReservedCodeCacheSize=32m -XX:MaxDirectMemorySize=32m -Xss512k -XX:ActiveProcessorCount=2"
+      - key: EXTENSION_STORES
+        value: '["https://raw.githubusercontent.com/keiyoushi/extensions/repo/index.pb"]'

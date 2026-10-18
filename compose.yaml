@@ -1,0 +1,16 @@
+services:
+  extensions:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    ports:
+      - "127.0.0.1:4567:4567"
+    environment:
+      AUTH_PASSWORD: "${TERAMANGA_SERVER_PASSWORD:?Set TERAMANGA_SERVER_PASSWORD}"
+      AUTH_USERNAME: reader
+      EXTENSION_STORES: '["https://raw.githubusercontent.com/keiyoushi/extensions/repo/index.pb"]'
+    volumes:
+      - extension-data:/home/suwayomi/.local/share/Tachidesk
+    restart: unless-stopped
+volumes:
+  extension-data:

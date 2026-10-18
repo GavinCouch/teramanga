@@ -1,53 +1,62 @@
 # Teramanga
 
-A personal manga reader for the web. Built with React, TypeScript, and Vite; deployable as static files on GitHub Pages. No backend account, database, analytics, or paid service is required.
+A browser manga reader with Keiyoushi/Suwayomi extension support and JSON catalogs. The frontend is hosted on [GitHub Pages](https://gavincouch.github.io/teramanga/).
 
 ## Development
 
-Use Node.js 24 and npm:
+Node.js 24:
 
 ```sh
 npm ci
 npm run dev
+npm run build
+npm test
 ```
 
-`npm run build` type-checks the application and produces `dist/`. `npm run preview` serves the production build.
+`build` runs TypeScript checks and creates `dist/`. `test` runs Playwright against the development server, using `/usr/bin/chromium` in this cloud environment. On another machine, set `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` to your Chromium path, or install Playwright's browser with `npx playwright install chromium` when no system Chromium is installed.
 
-`npm test` runs the Playwright integration suite. The cloud environment uses `/usr/bin/chromium`. On another machine, install Playwright Chromium with `npx playwright install chromium` and remove the `executablePath` override in `playwright.config.ts`, or point it to your installed Chromium. Tests cover custom repositories, source validation, reading and resume, collections, chapter completion, backups, and mobile layout.
+## Keiyoushi
 
-## Reading
+Keiyoushi distributes Android extensions. A static website cannot execute them directly. Teramanga connects to **Suwayomi Server**, which installs and runs the actual extensions and proxies their images.
 
-- Personal library with Reading, Completed, and Plan to read collections.
-- Search, genre filters, grid/list layouts, and title/last-read sorting.
-- Vertical scrolling or single-page reading; adjustable width, brightness, page spacing, and background.
-- Arrow-key page navigation with left-to-right or right-to-left direction, fullscreen (`F`), hide controls (`H`), and return (`Escape`).
-- Chapter/page navigation, automatic progress, reading history, and explicit chapter completion.
-- JSON backup export/restore, including imported catalogs and preferences.
+Use **Settings → Connect server**, then **Repositories → Add repository**. `https://github.com/keiyoushi`, Keiyoushi's old JSON URLs, and its repository website resolve to the current `https://raw.githubusercontent.com/keiyoushi/extensions/repo/index.pb`. Install extensions in the **Extensions** tab, then open **Browse**.
 
-The built-in catalog contains eight **original illustrated demo stories**, each with one five-page chapter. These are sample content, not licensed commercial manga. Cover and chapter SVGs are original project assets.
+The server supports full chapter lists and handles source networking. Individual sources can break or require browser verification. The free backend disables Chromium to fit its memory allowance.
 
-## Repositories
+[Free server setup](docs/free-hosting.md) includes a Render Free blueprint and a Docker option for your own computer. No paid instance, disk, database, or trial credits are requested. Render deployment still requires the owner to connect an account and create the service; saving a blueprint does not deploy it.
 
-Tachiyomi/Mihon/Tachimanga Android APK extensions cannot execute in browsers. Teramanga accepts web-compatible JSON catalogs with this structure:
+## Reading and library
+
+- Search, collections, title/last-read sorting, and grid/list layouts.
+- Vertical scrolling or single-page reading with left-to-right/right-to-left keyboard navigation.
+- Adjustable page width, brightness, background, and spacing.
+- Chapter filtering/sorting, saved page positions, and reading history.
+- Fullscreen (`F`), hide controls (`H`), and return (`Escape`).
+- Export/restore backups containing metadata and progress, without image files or server credentials.
+
+The initial library is empty. Fictional sample manga and promotional copy from the original version have been removed. Existing imported catalogs and progress remain in browser storage. Legacy demo IDs remain in old backups but are not shown in the interface. The original direct MangaDex API setting is retained in backup parsing for compatibility; native MangaDex access now uses the installed extension.
+
+## JSON catalogs
+
+Use **Repositories → Import JSON** to add a URL or upload a file:
 
 ```json
 {
   "name": "My catalog",
   "manga": [
     {
-      "id": "my-story",
-      "title": "My Story",
+      "id": "title-1",
+      "title": "Title",
       "author": "Author",
-      "description": "A story you have permission to share.",
       "cover": "https://example.com/cover.jpg",
       "genres": ["Adventure"],
       "status": "Ongoing",
       "chapters": [
         {
-          "id": "my-story-1",
+          "id": "chapter-1",
           "number": 1,
-          "title": "The beginning",
-          "pages": ["https://example.com/page-001.jpg"]
+          "title": "Chapter 1",
+          "pages": ["https://example.com/page-1.jpg"]
         }
       ]
     }
@@ -55,18 +64,16 @@ Tachiyomi/Mihon/Tachimanga Android APK extensions cannot execute in browsers. Te
 }
 ```
 
-Add a URL under **Repositories → Add repository**, or import a JSON file. Relative URLs resolve against the catalog URL. For imported files, provide their original URL when they contain relative image paths. Uploaded file catalogs are snapshots; reimport a new file to update one. HTTP(S) image URLs only; HTTPS is required when the site runs over HTTPS. Manga IDs and chapter IDs must be unique within their respective scopes. Imported IDs are namespaced per repository.
+Catalog endpoints must allow CORS. Relative image URLs resolve against the catalog URL. Uploaded files using relative paths need their original catalog URL. IDs are namespaced per catalog. On HTTPS deployments, image URLs must also use HTTPS. URL credentials, non-HTTP(S) images, duplicate IDs, and oversized catalogs are rejected.
 
-Catalog servers must permit browser access with an appropriate `Access-Control-Allow-Origin` header. Public GitHub raw files generally work. Image hosts may restrict hotlinking. Teramanga cannot bypass authentication, CORS, paywalls, DRM, or source availability restrictions. Only add content you have permission to access.
+## Storage and authentication
 
-**Optional MangaDex adapter:** MangaDex does not allow direct browser requests from arbitrary hosted origins, including GitHub Pages. It permits localhost for development. To enable the source on the public site, configure a trusted CORS-compatible MangaDex API gateway in Settings (same route structure as the official API). No gateway is bundled or hosted by this project. The source is hidden until an endpoint is configured. Select it in Discover and click **Search source**; it retrieves safe/suggestive listings and available English chapters (first 100 per selected title). The configured API and image servers must be reachable from the reader's browser. There is no server proxy. API errors are reported; sample stories remain usable. MangaDex titles saved to the library retain their remote source adapter across reloads and backups.
+Library data is stored in localStorage. Extension-server credentials are held in sessionStorage and sent only to the configured server. Protected covers/pages are fetched with authorization headers and displayed as revocable blob URLs; credentials are not included in image URLs or backups. There is no cross-device account or cloud sync.
 
-## Storage and privacy
+The free-server restore flow records repository URLs and installed package names. It can reinstall them after a server reset. Manga are reidentified by source ID and original URL; chapter identities use original chapter URLs rather than transient database IDs. This preserves reading positions when the source remains available. Keep browser backups before clearing site data.
 
-Library metadata, imported catalogs, progress, and preferences are saved in localStorage on the current browser. There is no login or automatic cross-device sync. Export backups in Settings before clearing browser data or changing devices. Restoring a backup replaces local data. Backups contain image URLs, not the actual images; reading requires access to the source. Do not place private credentials in repository URLs. Repository URLs with embedded credentials are rejected.
+## Deployment
 
-## Hosting
+`.github/workflows/pages.yml` publishes `main` to GitHub Pages. The Vite relative base supports `/teramanga/`. `render.yaml` defines the optional **Free** extension server. `backend/Dockerfile` pins the verified official Suwayomi image; `compose.yaml` runs the same backend locally with a persistent Docker volume.
 
-The GitHub Actions workflow in `.github/workflows/pages.yml` builds and deploys `main` to GitHub Pages. In repository **Settings → Pages**, set the source to **GitHub Actions**. Every push to `main` publishes a new build. The Vite relative base supports the `/teramanga/` project path.
-
-For another static host, run `npm ci && npm run build` and publish `dist/`. There are no server secrets or runtime environment variables to configure.
+[Design research and copy audit](docs/design-research.md).

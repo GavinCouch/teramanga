@@ -4,6 +4,7 @@ export type Chapter = {
   title: string;
   pages: string[];
   remote?: boolean;
+  serverId?: number;
 };
 export type Manga = {
   id: string;
@@ -16,6 +17,10 @@ export type Manga = {
   chapters: Chapter[];
   source?: string;
   remote?: boolean;
+  serverId?: number;
+  serverURL?: string;
+  sourceId?: string;
+  sourceMangaURL?: string;
 };
 export type Repo = {
   id: string;
@@ -50,16 +55,11 @@ export type State = {
   preferences: Preferences;
   categories: Record<string, string>;
   mangaDexEndpoint: string;
+  serverURL: string;
+  extensionConfig: { repositories: string[]; packages: string[] };
 };
 export const defaults: State = {
-  library: [
-    "the-last-light",
-    "midnight-express",
-    "bloom-into-spring",
-    "wandering-samurai",
-    "ocean-between-us",
-    "after-the-rain",
-  ],
+  library: [],
   repos: [],
   progress: {},
   preferences: {
@@ -71,6 +71,8 @@ export const defaults: State = {
     dim: 100,
   },
   categories: {},
+  serverURL: "",
+  extensionConfig: { repositories: [], packages: [] },
   mangaDexEndpoint: ["localhost", "127.0.0.1"].includes(location.hostname)
     ? "https://api.mangadex.org"
     : "",
@@ -199,6 +201,29 @@ export function validateBackup(raw: unknown): State {
         };
       });
     }
+    if (r.id.startsWith("suwayomi:")) {
+      catalog.manga = catalog.manga.map((m, index) => {
+        const original = r.manga[index];
+        if (
+          !Number.isInteger(original.serverId) ||
+          typeof original.serverURL !== "string"
+        )
+          throw new Error("Invalid extension title in backup.");
+        safeURL(original.serverURL, location.href);
+        return {
+          ...m,
+          serverId: original.serverId,
+          serverURL: original.serverURL,
+          source: original.source,
+          sourceId: original.sourceId,
+          sourceMangaURL: original.sourceMangaURL,
+          chapters: m.chapters.map((c, i) => ({
+            ...c,
+            serverId: original.chapters[i].serverId,
+          })),
+        };
+      });
+    }
     return { ...r, ...catalog, count: catalog.manga.length };
   });
   const progress: Record<string, Progress> = {};
@@ -250,7 +275,25 @@ export function validateBackup(raw: unknown): State {
     progress,
     preferences: { ...defaults.preferences, ...p },
     categories,
+    extensionConfig: {
+      repositories: Array.isArray(s.extensionConfig?.repositories)
+        ? s.extensionConfig.repositories.filter(
+            (x) => typeof x === "string" && x.startsWith("https://"),
+          )
+        : [],
+      packages: Array.isArray(s.extensionConfig?.packages)
+        ? s.extensionConfig.packages.filter(
+            (x) => typeof x === "string" && /^[a-zA-Z0-9_.]+$/.test(x),
+          )
+        : [],
+    },
     mangaDexEndpoint: endpoint,
+    serverURL:
+      typeof s.serverURL === "string"
+        ? s.serverURL
+          ? safeURL(s.serverURL, location.href).replace(/\/$/, "")
+          : ""
+        : "",
   };
 }
 export async function fetchJSON(url: string, signal?: AbortSignal) {
