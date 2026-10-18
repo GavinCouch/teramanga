@@ -1,0 +1,215 @@
+{
+  "name": "Teramanga Originals",
+  "description": "Eight original illustrated sample stories.",
+  "version": 1,
+  "manga": [
+    {
+      "id": "the-last-light",
+      "title": "The Last Light",
+      "author": "Ren Aoki",
+      "description": "Where the forest ends, a forgotten world begins. An original illustrated sample to explore your reader. Add a repository to bring your own manga.",
+      "cover": "./demo/the-last-light.svg",
+      "genres": [
+        "Adventure",
+        "Fantasy"
+      ],
+      "status": "Completed",
+      "chapters": [
+        {
+          "id": "the-last-light-1",
+          "number": 1,
+          "title": "A new beginning",
+          "pages": [
+            "./demo/the-last-light-page-1.svg",
+            "./demo/the-last-light-page-2.svg",
+            "./demo/the-last-light-page-3.svg",
+            "./demo/the-last-light-page-4.svg",
+            "./demo/the-last-light-page-5.svg"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "midnight-express",
+      "title": "Midnight Express",
+      "author": "Mika Sato",
+      "description": "One train. No destination. A thousand unfinished stories. An original illustrated sample to explore your reader. Add a repository to bring your own manga.",
+      "cover": "./demo/midnight-express.svg",
+      "genres": [
+        "Mystery",
+        "Supernatural"
+      ],
+      "status": "Ongoing",
+      "chapters": [
+        {
+          "id": "midnight-express-1",
+          "number": 1,
+          "title": "A new beginning",
+          "pages": [
+            "./demo/midnight-express-page-1.svg",
+            "./demo/midnight-express-page-2.svg",
+            "./demo/midnight-express-page-3.svg",
+            "./demo/midnight-express-page-4.svg",
+            "./demo/midnight-express-page-5.svg"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bloom-into-spring",
+      "title": "Bloom into Spring",
+      "author": "Haru Mori",
+      "description": "Some things grow quietly, until they change everything. An original illustrated sample to explore your reader. Add a repository to bring your own manga.",
+      "cover": "./demo/bloom-into-spring.svg",
+      "genres": [
+        "Romance",
+        "Slice of life"
+      ],
+      "status": "Ongoing",
+      "chapters": [
+        {
+          "id": "bloom-into-spring-1",
+          "number": 1,
+          "title": "A new beginning",
+          "pages": [
+            "./demo/bloom-into-spring-page-1.svg",
+            "./demo/bloom-into-spring-page-2.svg",
+            "./demo/bloom-into-spring-page-3.svg",
+            "./demo/bloom-into-spring-page-4.svg",
+            "./demo/bloom-into-spring-page-5.svg"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "wandering-samurai",
+      "title": "Wandering Samurai",
+      "author": "Yuki Tanaka",
+      "description": "A blade without a master. A road without an end. An original illustrated sample to explore your reader. Add a repository to bring your own manga.",
+      "cover": "./demo/wandering-samurai.svg",
+      "genres": [
+        "Action",
+        "Historical"
+      ],
+      "status": "Completed",
+      "chapters": [
+        {
+          "id": "wandering-samurai-1",
+          "number": 1,
+          "title": "A new beginning",
+          "pages": [
+            "./demo/wandering-samurai-page-1.svg",
+            "./demo/wandering-samurai-page-2.svg",
+            "./demo/wandering-samurai-page-3.svg",
+            "./demo/wandering-samurai-page-4.svg",
+            "./demo/wandering-samurai-page-5.svg"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ocean-between-us",
+      "title": "The Ocean Between Us",
+      "author": "Sora Ito",
+      "description": "Beyond the waves, a promise is still waiting. An original illustrated sample to explore your reader. Add a repository to bring your own manga.",
+      "cover": "./demo/ocean-between-us.svg",
+      "genres": [
+        "Drama",
+        "Adventure"
+      ],
+      "status": "Ongoing",
+      "chapters": [
+        {
+          "id": "ocean-between-us-1",
+          "number": 1,
+          "title": "A new beginning",
+          "pages": [
+            "./demo/ocean-between-us-page-1.svg",
+            "./demo/ocean-between-us-page-2.svg",
+            "./demo/ocean-between-us-page-3.svg",
+            "./demo/ocean-between-us-page-4.svg",
+            "./demo/ocean-between-us-page-5.svg"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "after-the-rain",
+      "title": "After the Rain",
+      "author": "Nagi Fujimoto",
+      "description": "The smallest moments leave the deepest marks. An original illustrated sample to explore your reader. Add a repository to bring your own manga.",
+      "cover": "./demo/after-the-rain.svg",
+      "genres": [
+        "Slice of life",
+        "Drama"
+      ],
+      "status": "Ongoing",
+      "chapters": [
+        {
+          "id": "after-the-rain-1",
+          "number": 1,
+          "title": "A new beginning",
+          "pages": [
+            "./demo/after-the-rain-page-1.svg",
+            "./demo/after-the-rain-page-2.svg",
+            "./demo/after-the-rain-page-3.svg",
+            "./demo/after-the-rain-page-4.svg",
+            "./demo/after-the-rain-page-5.svg"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "orbit",
+      "title": "Orbit",
+      "author": "Kei Nakamura",
+      "description": "At the edge of the universe, find your way home. An original illustrated sample to explore your reader. Add a repository to bring your own manga.",
+      "cover": "./demo/orbit.svg",
+      "genres": [
+        "Sci-fi",
+        "Adventure"
+      ],
+      "status": "Completed",
+      "chapters": [
+        {
+          "id": "orbit-1",
+          "number": 1,
+          "title": "A new beginning",
+          "pages": [
+            "./demo/orbit-page-1.svg",
+            "./demo/orbit-page-2.svg",
+            "./demo/orbit-page-3.svg",
+            "./demo/orbit-page-4.svg",
+            "./demo/orbit-page-5.svg"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "paper-cranes",
+      "title": "Paper Cranes",
+      "author": "Aya Kondo",
+      "description": "A thousand wishes. One impossible journey. An original illustrated sample to explore your reader. Add a repository to bring your own manga.",
+      "cover": "./demo/paper-cranes.svg",
+      "genres": [
+        "Fantasy",
+        "Mystery"
+      ],
+      "status": "Ongoing",
+      "chapters": [
+        {
+          "id": "paper-cranes-1",
+          "number": 1,
+          "title": "A new beginning",
+          "pages": [
+            "./demo/paper-cranes-page-1.svg",
+            "./demo/paper-cranes-page-2.svg",
+            "./demo/paper-cranes-page-3.svg",
+            "./demo/paper-cranes-page-4.svg",
+            "./demo/paper-cranes-page-5.svg"
+          ]
+        }
+      ]
+    }
+  ]
+}
